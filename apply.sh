@@ -16,4 +16,5 @@ kubectl apply -f org1-peers/peer0-pod.yaml
 kubectl apply -f org1-peers/peer0-org2-pod.yaml
 kubectl apply -f org1-peers/cli-pod.yaml
 kubectl apply -f org1-peers/orderer-pod.yaml
+kubectl apply -f services/oerder0-service.yaml
 

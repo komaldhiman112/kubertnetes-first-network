@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: channel-artifacts-pv-volumeclaim
+spec:
+
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: channel-artifacts-pv-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 3Gi

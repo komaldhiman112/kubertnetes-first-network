@@ -1,0 +1,79 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: cli-pod
+spec:
+  selector:
+    matchLabels:
+      app: cli-pod
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cli-pod
+    spec:
+
+      containers:
+      - image: hyperledger/fabric-tools
+        name: cli-pod
+        imagePullPolicy: Never
+        tty: true
+        workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        command: [ "/bin/bash" ]
+        env:
+        - name: GOPATH
+          value: /opt/gopath
+        - name: CORE_PEER_ADDRESS
+          value: org1-peer0:7051
+
+        - name: CORE_PEER_ID
+          value: cli-pod
+        - name: CORE_PEER_LOCALMSPID
+          value: Org1MSP
+
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/crypto-config/peerOrganizations/org1.example.compeers/peer0.org2.example.com/tls/server.key
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org2.example.com/tls/ca.crt
+        - name: CORE_VM_ENDPOINT
+          value: unix:///host/var/run/docker.sock
+        - name: FABRIC_LOGGING_SPEC
+          value: DEBUG
+
+        - name: CORE_PEER_ADDRESSAUTODETECT
+          value: "true"
+        - name: CORE_PEER_TLS_SERVERHOSTOVERRIDE
+          value: peer0.org1.example.com
+
+        volumeMounts:
+        - name: cli-certificate
+          mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - name: channel-artifacts
+          mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+        - name: chaincode
+          mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+        - name: docker
+          mountPath: /host/var/run/
+
+
+      volumes:
+      - name: cli-certificate
+        persistentVolumeClaim:
+          claimName: cli-certificate-pv-volumeclaim
+      - name: channel-artifacts
+        persistentVolumeClaim:
+          claimName: channel-artifacts-pv-volumeclaim
+      - name: chaincode
+        persistentVolumeClaim:
+          claimName: chaincode-pv-volumeclaim
+      - name: docker
+        hostPath:
+          path: /var/run
+          type: Directory
+  
+

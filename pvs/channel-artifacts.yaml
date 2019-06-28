@@ -1,0 +1,23 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: channel-artifacts-pv-volume
+  labels:
+    type: channel-artifacts-pv-volume
+    purpose: dev
+spec:
+
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - pankaj-worker1
+  hostPath:
+    path: "/home/ubuntu/fabric-samples/first-network/channel-artifacts/"

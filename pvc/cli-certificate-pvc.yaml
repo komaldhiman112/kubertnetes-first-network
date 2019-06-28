@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cli-certificate-pv-volumeclaim
+spec:
+
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: cli-certificate-pv-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 3Gi

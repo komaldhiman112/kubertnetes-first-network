@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb0-peer0org1
+spec:
+  ports:
+  - port: 5984
+    targetPort: 5984
+  type: NodePort
+  selector:
+    app: couchdb0-peer0org1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb0-peer0org1
+spec:
+  selector:
+    matchLabels:
+      app: couchdb0-peer0org1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: couchdb0-peer0org1
+    spec:
+
+      containers:
+      - image: hyperledger/fabric-couchdb
+        imagePullPolicy: IfNotPresent
+        name: couchdb0
+        env:
+        - name: COUCHDB_USER
+          value: admin
+        - name: COUCHDB_PASSWORD
+          value: admin
+        ports:
+        - containerPort: 5984
+          name: couchdb0
+        volumeMounts:
+        - name: datacouchdbpeer0org1
+          mountPath: /var/lib/couchdb
+
+      volumes:
+      - name: datacouchdbpeer0org1
+        persistentVolumeClaim:
+          claimName: couchdb0-peer0-org1-pv-volumeclaim

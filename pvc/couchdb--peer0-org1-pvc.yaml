@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: couchdb0-peer0-org1-pv-volumeclaim
+spec:
+
+  accessModes:
+    - ReadWriteOnce
+  selector:
+    matchLabels:
+      type: couchdb0-peer0-org1-pv-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 3Gi

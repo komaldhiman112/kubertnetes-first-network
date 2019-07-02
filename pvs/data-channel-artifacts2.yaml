@@ -1,14 +1,15 @@
+  
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: channel-artifacts-pv-volume
+  name: data-channel-artifacts-volume2
   labels:
-    type: channel-artifacts-pv-volume
+    type: data-channel-artifacts-volume2
     purpose: dev
 spec:
 
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteMany
   nodeAffinity:
@@ -21,3 +22,20 @@ spec:
           - pankaj-worker1
   hostPath:
     path: "/home/ubuntu/fabric-samples/first-network/channel-artifacts/"
+
+---
+  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-channel-artifacts-volumeclaim2
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: data-channel-artifacts-volume2
+      purpose: dev
+  resources:
+    requests:
+      storage: 4Gi

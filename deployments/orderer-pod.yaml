@@ -72,16 +72,17 @@ spec:
           mountPath: /var/hyperledger/channel
         - name: orderer-certificate
           mountPath: /var/hyperledger/orderer
+          
 
 
 
       volumes:
       - name: orderer-channel-artifacts
         persistentVolumeClaim:
-          claimName: channel-artifacts-pv-volumeclaim
+          claimName: data-channel-artifacts-volumeclaim
       - name: orderer-certificate
         persistentVolumeClaim:
-          claimName: orderer-pv-volumeclaim
+          claimName: data-cryptoconfig-orderer-volumeclaim
 
   
 

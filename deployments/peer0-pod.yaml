@@ -36,7 +36,10 @@ spec:
       labels:
         app: org1-peer0
     spec:
-
+      hostAliases:
+      - ip: "10.102.57.215"
+        hostnames: 
+        - "orderer.example.com"
       containers:
       - image: hyperledger/fabric-peer:1.4.0
         name: org1-peer0
@@ -61,13 +64,13 @@ spec:
         - name: CORE_PEER_PROFILE_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_CERT_FILE
-          value: /root/org1/peers/peer0.org1.example.com/tls/server.crt
+          value: /etc/hyperledger/fabric/tls/server.crt
         - name: CORE_PEER_TLS_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_KEY_FILE
-          value: /root/org1/peers/peer0.org1.example.com/tls/server.key
+          value: /etc/hyperledger/fabric/tls/server.key
         - name: CORE_PEER_TLS_ROOTCERT_FILE
-          value: /root/org1/peers/peer0.org1.example.com/tls/ca.crt
+          value: /etc/hyperledger/fabric/tls/ca.crt
         - name: CORE_VM_ENDPOINT
           value: unix:///host/var/run/docker.sock
         - name: FABRIC_LOGGING_SPEC
@@ -92,7 +95,11 @@ spec:
         - containerPort: 7053
         volumeMounts:
         - name: org1-storage
-          mountPath: /root/org1
+          mountPath: /etc/hyperledger/fabric/msp
+          subPath: peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+        - name: org1-storage
+          mountPath: /etc/hyperledger/fabric/tls
+          subPath: peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls
 
         - name: docker
           mountPath: /host/var/run/
@@ -101,7 +108,7 @@ spec:
       volumes:
       - name: org1-storage
         persistentVolumeClaim:
-          claimName: peer0-pv-claim
+          claimName: data-crypto-config-volumeclaim
       - name: docker
         hostPath:
           path: /var/run

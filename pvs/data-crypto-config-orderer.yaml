@@ -1,0 +1,41 @@
+  
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: data-cryptoconfig-orderer-volume
+  labels:
+    type: data-cryptoconfig-orderer-volume
+    purpose: dev
+spec:
+
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - pankaj-worker2
+  hostPath:
+    path: "/home/ubuntu/fabric-samples/first-network/crypto-config/ordererOrganizations"
+
+---
+  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-cryptoconfig-orderer-volumeclaim
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: data-cryptoconfig-orderer-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 4Gi

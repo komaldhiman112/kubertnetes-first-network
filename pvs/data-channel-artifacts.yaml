@@ -1,0 +1,41 @@
+  
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: data-channel-artifacts-volume
+  labels:
+    type: data-channel-artifacts-volume
+    purpose: dev
+spec:
+
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - pankaj-worker2
+  hostPath:
+    path: "/home/ubuntu/fabric-samples/first-network/channel-artifacts/"
+
+---
+  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-channel-artifacts-volumeclaim
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: data-channel-artifacts-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 4Gi

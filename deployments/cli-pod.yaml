@@ -37,7 +37,7 @@ spec:
         - name: CORE_PEER_TLS_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_KEY_FILE
-          value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.compeers/peer0.org1.example.com/tls/server.key
+          value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
         - name: CORE_PEER_TLS_ROOTCERT_FILE
           value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
         - name: CORE_VM_ENDPOINT
@@ -68,13 +68,13 @@ spec:
       volumes:
       - name: cli-certificate
         persistentVolumeClaim:
-          claimName: cli-certificate-pv-volumeclaim
+          claimName: data-crypto-config-volumeclaim
       - name: channel-artifacts
         persistentVolumeClaim:
-          claimName: channel-artifacts-pv-volumeclaim
+          claimName: data-channel-artifacts-volumeclaim2
       - name: chaincode
         persistentVolumeClaim:
-          claimName: chaincode-pv-volumeclaim
+          claimName: data-chaincode-volumeclaim
       - name: docker
         hostPath:
           path: /var/run

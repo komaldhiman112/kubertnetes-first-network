@@ -63,13 +63,13 @@ spec:
         - name: CORE_PEER_PROFILE_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_CERT_FILE
-          value: /root/org2/peers/peer0.org2.example.com/tls/server.crt
+          value: /etc/hyperledger/fabric/tls/server.crt
         - name: CORE_PEER_TLS_ENABLED
           value: "true"
         - name: CORE_PEER_TLS_KEY_FILE
-          value: /root/org2/peers/peer0.org2.example.com/tls/server.key
+          value: /etc/hyperledger/fabric/tls/server.key
         - name: CORE_PEER_TLS_ROOTCERT_FILE
-          value: /root/org2/peers/peer0.org2.example.com/tls/ca.crt
+          value: /etc/hyperledger/fabric/tls/ca.crt
         - name: CORE_VM_ENDPOINT
           value: unix:///host/var/run/docker.sock
         - name: FABRIC_LOGGING_SPEC
@@ -94,7 +94,11 @@ spec:
         - containerPort: 7053
         volumeMounts:
         - name: org2-storage
-          mountPath: /root/org2
+          mountPath: /etc/hyperledger/fabric/msp
+          subPath: peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp
+        - name: org2-storage
+          mountPath: /etc/hyperledger/fabric/tls
+          subPath: peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls
 
         - name: docker
           mountPath: /host/var/run/
@@ -103,7 +107,7 @@ spec:
       volumes:
       - name: org2-storage
         persistentVolumeClaim:
-          claimName: peer0-org2-pv-claim
+          claimName: data-crypto-config-volumeclaim
       - name: docker
         hostPath:
           path: /var/run

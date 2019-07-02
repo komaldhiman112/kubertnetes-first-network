@@ -1,14 +1,15 @@
+  
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: cli-certificate-pv-volume
+  name: data-crypto-config-volume
   labels:
-    type: cli-certificate-pv-volume
+    type: data-crypto-config-volume
     purpose: dev
 spec:
 
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteMany
   nodeAffinity:
@@ -21,3 +22,20 @@ spec:
           - pankaj-worker1
   hostPath:
     path: "/home/ubuntu/fabric-samples/first-network/crypto-config/"
+
+---
+  
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-crypto-config-volumeclaim
+spec:
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      type: data-crypto-config-volume
+      purpose: dev
+  resources:
+    requests:
+      storage: 4Gi

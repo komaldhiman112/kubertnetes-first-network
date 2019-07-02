@@ -42,8 +42,9 @@ spec:
         volumeMounts:
         - name: datacouchdbpeer0org1
           mountPath: /var/lib/couchdb
+          subPath: couchdb0
 
       volumes:
       - name: datacouchdbpeer0org1
         persistentVolumeClaim:
-          claimName: couchdb0-peer0-org1-pv-volumeclaim
+          claimName: data-worker1-volumeclaim
